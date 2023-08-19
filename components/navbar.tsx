@@ -7,7 +7,6 @@ import {
 	NavbarItem,
 	NavbarMenuItem,
 } from "@nextui-org/navbar";
-import { Button } from "@nextui-org/button";
 import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
 import { Input } from "@nextui-org/input";
@@ -21,10 +20,6 @@ import { UserButton } from "@clerk/nextjs";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 import {
-	TwitterIcon,
-	GithubIcon,
-	DiscordIcon,
-	HeartFilledIcon,
 	SearchIcon,
 } from "@/components/icons";
 
@@ -58,12 +53,12 @@ export const Navbar = () => {
 				<NavbarBrand as="div" className=" ">
 					<NextLink className="flex justify-start items-center gap-1" href="/dashboard">
 						<Logo />
-						<p className="font-bold text-inherit ml-2">Afiliación Segura</p>
+						<p className="font-bold text-inherit ml-2 md:ml-0">Afiliación Segura</p>
 					</NextLink>
 				</NavbarBrand>
 			</NavbarContent>	
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
-				<ul className="hidden lg:flex gap-4 justify-start ml-2">
+				<ul className="hidden lg:flex gap-4 justify-start ml-2 md:ml-0">
 					{siteConfig.navItems.map((item) => (
 						<NavbarItem key={item.href}>
 							<NextLink
@@ -96,12 +91,9 @@ export const Navbar = () => {
 					<ThemeSwitch />
 				</NavbarItem>
 				<NavbarItem className="hidden md:flex">
-					<UserButton />
+					<UserButton afterSignOutUrl="/dashboard" />
 				</NavbarItem>
 			</NavbarContent>
-
-				
-								
 
 			<NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
 				

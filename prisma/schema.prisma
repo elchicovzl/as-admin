@@ -1,0 +1,158 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Enum_Rol {
+  SuperAdmin
+  Admin
+}
+
+model MediaType {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Media {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  src         String
+  affiliateId String @db.ObjectId
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  affiliate Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+}
+
+enum Enum_TypeAffiliate {
+  Independiente
+  Empresa
+}
+
+enum Enum_TypePhones {
+  Casa
+  Oficina
+  Celular
+}
+
+enum Esnum_Status_Affiliate {
+  Pendiente
+  EnTramite @map("En Tramite")
+  EnRevision @map("En Revisión")
+  Terminado
+  Cancelado
+}
+
+enum Enum_Proccess {
+  Recepcion
+  VerificarEPS @map("Verificar EPS")
+  VerificarPensionFund @map("Verificar fondo de pensión")
+  AfiliacionEPS @map("Afiliando en EPS")
+  AfiliacionFondoPension @map("Afiliando en fondo de pensión")
+  RevisionAfiliacion @map("Revisando afiliacion")
+  EnviandoAfiliacion @map("Enviando afiliacion")
+}
+
+model Affiliate {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+
+  documentIdentity  String
+  names             String
+  lastNames         String
+  gender            String
+  email             String
+  ocupation         String
+  salary            Int
+  dateAdmission     DateTime
+  dateBirth         DateTime
+
+  eps               Boolean
+  arl               Boolean
+  pensionFund       Boolean
+  compensationBox   Boolean
+
+  contributorId     String @db.ObjectId
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  contributorType ContributorType @relation(fields: [contributorId], references: [id], onDelete: Cascade)
+
+  media             Media[]
+  address           Address[]
+  phones            Phones[]
+
+  typeAffiliate       Enum_TypeAffiliate @default(Independiente)
+  statusProcess       Enum_Proccess @default(Recepcion)
+}
+
+model TypesAffiliate {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContributorType {
+  id                 String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name               String
+  description        String?
+  durationProccess   String
+  price              Int
+
+  affiliates         Affiliate[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AffiliateProcessHistory {
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+
+  AffiliateProcess String
+  userId           String
+
+  affiliateId      String @db.ObjectId
+}
+
+model Address {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+
+  address      String
+  neighborhood String
+  municipality String
+  department   String
+
+  affiliateId  String @db.ObjectId
+  affiliate    Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Phones {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+
+  type  Enum_TypePhones @default(Celular)
+  number String
+
+  affiliateId  String @db.ObjectId
+  affiliate    Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
