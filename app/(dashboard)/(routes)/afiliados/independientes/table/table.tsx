@@ -57,8 +57,6 @@ interface AffiliatesDataProps {
 }
 
 const TableData : React.FC<AffiliatesDataProps> = ({ ditems }) => {
-    console.log("mostrando data");
-    console.log(ditems);
 
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
@@ -118,10 +116,6 @@ const TableData : React.FC<AffiliatesDataProps> = ({ ditems }) => {
     const renderCell = React.useCallback((item: SafeAffiliate, columnKey: React.Key) => {
         const cellValue = item[columnKey as keyof SafeAffiliate];
 
-        console.log("value is..")
-        console.log(columnKey)
-        console.log(cellValue)
-    
         switch (columnKey) {
             case "documentIdentity":
                 return (
