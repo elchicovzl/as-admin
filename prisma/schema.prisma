@@ -54,6 +54,21 @@ enum Esnum_Status_Affiliate {
   Cancelado
 }
 
+enum Esnum_Type_DocumentID {
+  CC @map("CEDULA DE CIUDADANIA")
+  PA @map("PASAPORTE  ")
+  AS @map("ADULTO SIN IDENTIFICACION")
+  CD @map("CARNET DIPLOMATICO")
+  CN @map("CERTIFICADO DE NACIDO VIVO")
+  SC @map("SALVACONDUCTO DE PERMANENCIA")
+  PE @map("PERMISO ESPECIAL DE PERMANENCIA")
+  PT @map("PERMISO POR PROTECCION TEMPORAL")
+  MS @map("MENOR SIN IDENTIFICACION")
+  RC @map("REGISTRO CIVIL")
+  TI @map("TARJETA DE IDENTIDAD")
+  CE @map("CEDULA DE EXTRANJERIA")
+}
+
 enum Enum_Proccess {
   Recepcion
   VerificarEPS @map("Verificar EPS")
@@ -67,6 +82,7 @@ enum Enum_Proccess {
 model Affiliate {
   id                String @id @default(auto()) @map("_id") @db.ObjectId
 
+  documentType      Esnum_Type_DocumentID @default(CC)
   documentIdentity  String
   names             String
   lastNames         String
